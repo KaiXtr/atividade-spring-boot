@@ -26,6 +26,9 @@ public class Usuario {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
+    public void setId(UUID v){
+        this.id = v;
+    }
     public void setNome(String v){
         this.nome = v;
     }
@@ -34,6 +37,10 @@ public class Usuario {
     }
     public void setSenha(String v){
         this.senha = v;
+    }
+     
+    public UUID getId(){
+        return this.id;
     }
     public String getNome(){
         return this.nome;
