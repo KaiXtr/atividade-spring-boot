@@ -24,7 +24,13 @@ public class UsuarioController {
         var usuario = this.usrRepo.findByNome(usr.getNome());
 
         if (usuario != null){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("ALERTA:  Usuário já existe!");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("ALERTA: Usuário já existe!");
+        }
+        if (usr.getEmail().indexOf("@") == -1){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("ALERTA: Insira um endereço de email válido.");
+        }
+        if (usr.getSenha().length() < 8){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("ALERTA: Senha precisa ter pelo menos 8 caracteres.");
         }
         
         var senhaHash = BCrypt.withDefaults().hashToString(12,usr.getSenha().toCharArray());
@@ -35,9 +41,9 @@ public class UsuarioController {
     }
 
     @GetMapping("/")
-    public Usuario listar(HttpServletRequest request){
+    public ResponseEntity listar(HttpServletRequest request){
         var nome = request.getAttribute("nome");
-        var usuarios = this.usrRepo.findByNome((String) nome);
-        return usuarios;
+        var usuario = this.usrRepo.findByNome((String) nome);
+        return ResponseEntity.status(HttpStatus.OK).body(usuario);
     }
 }

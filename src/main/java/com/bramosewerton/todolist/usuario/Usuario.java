@@ -25,30 +25,4 @@ public class Usuario {
 
     @CreationTimestamp
     private LocalDateTime createdAt;
-
-    public void setId(UUID v){
-        this.id = v;
-    }
-    public void setNome(String v){
-        this.nome = v;
-    }
-    public void setEmail(String v){
-        this.email = v;
-    }
-    public void setSenha(String v){
-        this.senha = v;
-    }
-     
-    public UUID getId(){
-        return this.id;
-    }
-    public String getNome(){
-        return this.nome;
-    }
-    public String getEmail(){
-        return this.email;
-    }
-    public String getSenha(){
-        return this.senha;
-    }
 }

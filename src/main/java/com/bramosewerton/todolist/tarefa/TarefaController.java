@@ -28,9 +28,6 @@ public class TarefaController {
 
     @PostMapping("/")
     public ResponseEntity create(@RequestBody Tarefa tar,HttpServletRequest request) {
-        var idUsuario = request.getAttribute("idUsuario");
-        tar.setIdUsuario((UUID) idUsuario);
-
         var dataAtual = LocalDateTime.now();
         if (dataAtual.isAfter(tar.getDataDeInicio()) || dataAtual.isAfter(tar.getDataDeTermino())){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("As datas de início e término devem ser maiores que a data atual.");
@@ -51,11 +48,20 @@ public class TarefaController {
     }
 
     @PutMapping("/{id}")
-    public void atualizar(@RequestBody Tarefa tar, @PathVariable UUID id, HttpServletRequest request){
+    public ResponseEntity atualizar(@RequestBody Tarefa tar, @PathVariable UUID id, HttpServletRequest request){
 
         var tarefa = this.tarRepo.findById(id).orElse(null);
-        Utils.copiarPropriedadesNaoVazias(tar, tarefa);
+        if (tarefa == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("A tarefa não foi encontrada");
+        }
+        
+        var idUsuario = request.getAttribute("idUsuario");
+        if (!tar.getIdUsuario().equals(idUsuario)){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("A tarefa que deseja cadastrar não pertence a esse usuário.");
+        }
 
-        return this.tarRepo.save(tar);
+        Utils.copiarPropriedadesNaoVazias(tar, tarefa);
+        var novaTarefa = this.tarRepo.save(tar);
+        return ResponseEntity.status(HttpStatus.OK).body(novaTarefa);
     }
 }

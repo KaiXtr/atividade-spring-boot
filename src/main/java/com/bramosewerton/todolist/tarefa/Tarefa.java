@@ -30,35 +30,11 @@ public class Tarefa {
 
     private UUID idUsuario;
 
-    public void setIdUsuario(UUID v){
-        this.idUsuario = v;
-    }
-    public void setTitulo(String v){
-        this.titulo = v;
-    }
-    public void setDescricao(String v){
-        this.descricao = v;
-    }
-    public void setDataDeInicio(LocalDateTime v){
-        this.dataDeInicio = v;
-    }
-    public void setDataDeTermino(LocalDateTime v){
-        this.dataDeTermino = v;
-    }
-
-    public UUID getIdUsuario(){
-        return this.idUsuario;
-    }
-    public String getTitulo(){
-        return this.titulo;
-    }
-    public String getDescricao(){
-        return this.descricao;
-    }
-    public LocalDateTime getDataDeInicio(){
-        return this.dataDeInicio;
-    }
-    public LocalDateTime getDataDeTermino(){
-        return this.dataDeTermino;
+    private void setTitulo(String valor) throws Exception{
+        if (valor.length() >= 50){
+            throw new Exception("O tamanho máximo para o título é de 50 caracteres.");
+        }else{
+            this.titulo = valor;
+        }
     }
 }

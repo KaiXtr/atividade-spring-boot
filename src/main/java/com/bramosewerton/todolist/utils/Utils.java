@@ -1,6 +1,7 @@
 package com.bramosewerton.todolist.utils;
 
 import java.beans.PropertyDescriptor;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.beans.BeanUtils;
@@ -20,13 +21,12 @@ public class Utils {
         Set<String> nomesVazios = new HashSet<>();
 
         for (PropertyDescriptor pd:pds){
-            Object srcValor = src.getPropertyValue(pd.getValue());
-
+            Object srcValor = src.getPropertyValue(pd.getName());
             if (srcValor == null){
                 nomesVazios.add(pd.getName());
             }
-            String[] resultados = new String[nomesVazios.size()];
-            return nomesVazios.toArray(resultados);
         }
+        String[] resultados = new String[nomesVazios.size()];
+        return nomesVazios.toArray(resultados);
     }
 }
